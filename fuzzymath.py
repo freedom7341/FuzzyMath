@@ -8,10 +8,11 @@ fuzzy_fuzz_num = lambda precision, sigfig : precision * (math.sqrt(sigfig) / 10)
 sign = lambda x: -1 if x < 0 else (1 if x > 0 else 0)
 
 def fuzzy_mult_loop(x, y, endType, precision=1):
-    a = x
-    b = y
+    a = int(x*(10**(fuzzy_get_sigfigs(x))))
+    b = int(y*(10**(fuzzy_get_sigfigs(y))))
     c = 0
     i = 0
+    
     
     while b != 0:
         a = a << 1
@@ -21,7 +22,7 @@ def fuzzy_mult_loop(x, y, endType, precision=1):
         b = b >> 1
         i += 1
     
-    return c / 2
+    return c / (2*10**(fuzzy_get_sigfigs(x))*10**(fuzzy_get_sigfigs(y)))
 
 def fuzzyarithmetic(operation, precision=1):
     match operation:
@@ -36,5 +37,5 @@ def fuzzyarithmetic(operation, precision=1):
     
     # triangular distribution?
     
-adding=fuzzyarithmetic(0)
-print(adding(24,6))
+adding=fuzzyarithmetic(0, 0)
+print(adding(24.5,6.3))
