@@ -29,7 +29,7 @@ def fuzzyarithmetic(operation, precision=1):
         case 0: # Multiplication
             return lambda x, y : random.triangular(fuzzy_mult_loop(x, y, 1, precision), fuzzy_mult_loop(x, y, 2, precision), fuzzy_mult_loop(x, y, 0, precision))
         case 1: # Division
-            return lambda x, y : x / y
+            return lambda x, y : random.triangular(fuzzy_mult_loop(x, round(1 / y, fuzzy_get_sigfigs(y)), 1, precision), fuzzy_mult_loop(x, round(1 / y, fuzzy_get_sigfigs(y)), 2, precision), fuzzy_mult_loop(x, round(1 / y, fuzzy_get_sigfigs(y)), 0, precision))
         case 2: # Addition
             return lambda x, y : random.triangular((x + y) * (1 - fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), (x + y) * (1 + fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), x + y)
         case 3: # Subtraction
