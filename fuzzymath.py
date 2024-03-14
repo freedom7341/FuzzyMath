@@ -36,6 +36,19 @@ def fuzzyarithmetic(operation, precision=1):
             return lambda x, y : random.triangular((x - y) * (1 - fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), (x - y) * (1 + fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), x - y)
     
     # triangular distribution?
+#We want to return low mid high and the option to choose any of the three
+def fuzzyrange(x, y, operation ,precision=1):
+    match operation:
+        case 0: # Multiplication
+            return (fuzzy_mult_loop(x, y, 1, precision),fuzzy_mult_loop(x, y, 0, precision), fuzzy_mult_loop(x, y, 2, precision))
+        case 1: # Division
+            return ((fuzzy_mult_loop(x, round(1 / y, fuzzy_get_sigfigs(y)), 1, precision), fuzzy_mult_loop(x, round(1 / y, fuzzy_get_sigfigs(y)), 0, precision)),fuzzy_mult_loop(x, round(1 / y, fuzzy_get_sigfigs(y)), 2, precision))
+        case 2: # Addition
+            return ((x + y) * (1 - fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), x + y, (x + y) * (1 + fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))))
+        case 3: # Subtraction
+            return (((x - y) * (1 - fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), x - y,(x - y) * (1 + fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y)))))
     
-adding=fuzzyarithmetic(0, 0)
-print(adding(24.5,6.3))
+        
+    
+adding=fuzzyrange(2,2,1,1)
+print(adding)
