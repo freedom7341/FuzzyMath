@@ -1,5 +1,4 @@
 import random
-import re
 import math
 
 fuzzy_get_sigfigs = lambda x : len(str(x).rstrip("0")) if len(str(x).split(".", 1)) == 1 else len(str(x).replace(".", "").lstrip("0"))
