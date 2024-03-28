@@ -2,7 +2,7 @@ import random
 import re
 import math
 
-fuzzy_get_sigfigs = lambda x : len((re.match( r'[1-9](\d*[1-9])?', str(x).replace('.', ''))).group())
+fuzzy_get_sigfigs = lambda x : len(str(x).rstrip("0")) if len(str(x).split(".", 1)) == 1 else len(str(x).replace(".", "").lstrip("0"))
 fuzzy_get_bigfig = lambda x, y : x if (fuzzy_get_sigfigs(x) > fuzzy_get_sigfigs(y)) else y
 fuzzy_fuzz_num = lambda precision, sigfig : precision * (math.sqrt(sigfig) / 10)
 sign = lambda x: -1 if x < 0 else (1 if x > 0 else 0)
