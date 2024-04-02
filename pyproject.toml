@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fuzzy-math"
+description = "What if math was inaccurate... and inconsistently so?"
+keywords = ["precision", "accuracy", "python", "smart", "math"]
+readme = "README.md"
+license = {file = "LICENSE"}
+version = "a1.0.0"
+dependencies = ["random", "math"]
+authors = [
+  {name = "Brady McDermott", email = "freedom7341@hotmail.com"},
+  {name = "Nathan Ome Hancock", email = "nunya@business.com"},
+]
+
+[project.urls]
+Repository = "https://github.com/freedom7341/FuzzyMath.git"
+Issues = "https://github.com/freedom7341/FuzzyMath/issues"
