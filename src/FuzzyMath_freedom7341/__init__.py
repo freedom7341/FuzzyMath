@@ -46,8 +46,3 @@ def fuzzyrange(x, y, operation ,precision=1):
             return ((x + y) * (1 - fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), x + y, (x + y) * (1 + fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))))
         case 3: # Subtraction
             return (((x - y) * (1 - fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), x - y,(x - y) * (1 + fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y)))))
-    
-        
-    
-adding=fuzzyrange(2,2,1,1)
-print(adding)
