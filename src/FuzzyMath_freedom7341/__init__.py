@@ -26,23 +26,24 @@ def fuzzy_mult_loop(x, y, endType, precision=1):
 def fuzzyarithmetic(operation, precision=1):
     match operation:
         case 0: # Multiplication
-            return lambda x, y : random.triangular(fuzzy_mult_loop(x, y, 1, precision), fuzzy_mult_loop(x, y, 2, precision), fuzzy_mult_loop(x, y, 0, precision))
+            return lambda x, y : list(random.triangular(fuzzy_mult_loop(float(i[1]), float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), 1, precision), fuzzy_mult_loop(float(i[1]), float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), 2, precision), fuzzy_mult_loop(float(i[1]), float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), 0, precision)) for i in list(enumerate(str(x).strip('[]').split(','))))
         case 1: # Division
             return lambda x, y : random.triangular(fuzzy_mult_loop(x, round(1 / y, fuzzy_get_sigfigs(y)), 1, precision), fuzzy_mult_loop(x, round(1 / y, fuzzy_get_sigfigs(y)), 2, precision), fuzzy_mult_loop(x, round(1 / y, fuzzy_get_sigfigs(y)), 0, precision))
         case 2: # Addition
             return lambda x, y : random.triangular((x + y) * (1 - fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), (x + y) * (1 + fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), x + y)
         case 3: # Subtraction
             return lambda x, y : random.triangular((x - y) * (1 - fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), (x - y) * (1 + fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), x - y)
-    
-    # triangular distribution?
-#We want to return low mid high and the option to choose any of the three
+
+
 def fuzzyrange(x, y, operation ,precision=1):
     match operation:
         case 0: # Multiplication
-            return (fuzzy_mult_loop(x, y, 1, precision),fuzzy_mult_loop(x, y, 0, precision), fuzzy_mult_loop(x, y, 2, precision))
+            return list([fuzzy_mult_loop(float(i[1]), float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), 1, precision),fuzzy_mult_loop(float(i[1]), float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), 0, precision), fuzzy_mult_loop(float(i[1]), float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), 2, precision)] for i in list(enumerate(str(x).strip('[]').split(','))))
         case 1: # Division
-            return ((fuzzy_mult_loop(x, round(1 / y, fuzzy_get_sigfigs(y)), 1, precision), fuzzy_mult_loop(x, round(1 / y, fuzzy_get_sigfigs(y)), 0, precision)),fuzzy_mult_loop(x, round(1 / y, fuzzy_get_sigfigs(y)), 2, precision))
+            return list([fuzzy_mult_loop(x, round(1 / float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), fuzzy_get_sigfigs(float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]))), 1, precision), fuzzy_mult_loop(x, round(1 / float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), fuzzy_get_sigfigs(float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]))), 0, precision),fuzzy_mult_loop(x, round(1 / float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), fuzzy_get_sigfigs(float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]))), 2, precision)] for i in list(enumerate(str(x).strip('[]').split(','))))
         case 2: # Addition
             return ((x + y) * (1 - fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), x + y, (x + y) * (1 + fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))))
         case 3: # Subtraction
             return (((x - y) * (1 - fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), x - y,(x - y) * (1 + fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y)))))
+
+print(fuzzyrange(fuzzyrange(5,5,1),5,1))
