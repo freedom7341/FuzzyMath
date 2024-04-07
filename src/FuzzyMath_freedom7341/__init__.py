@@ -1,18 +1,24 @@
 import random
 import math
 
-# 
+# Converts the number to a string and returns significant figures.
 fuzzy_get_sigfigs = lambda x : len(str(x).rstrip("0")) if len(str(x).split(".", 1)) == 1 else len(str(x).replace(".", "").lstrip("0"))
+
+# Takes two numbers and returns the one with more significant figures.
 fuzzy_get_bigfig = lambda x, y : x if (fuzzy_get_sigfigs(x) > fuzzy_get_sigfigs(y)) else y
+
+# Returns an imprecise number based on the number and significant figures.
 fuzzy_fuzz_num = lambda precision, sigfig : precision * (math.sqrt(sigfig) / 10)
+
+# Returns a +/- 1 based on the number's sign.
 sign = lambda x: -1 if x < 0 else (1 if x > 0 else 0)
 
-def fuzzy_mult_loop(x, y, endType, precision=1):
+# Loops through and imprecisely multiplies two numbers together.
+def fuzzy_mult_loop(x, y, endType, precision = 1):
     a = int(x * (10 ** (fuzzy_get_sigfigs(x))))
     b = int(y * (10 ** (fuzzy_get_sigfigs(y))))
     c = 0
     i = 0
-    
     
     while b != 0:
         a = a << 1
@@ -24,7 +30,8 @@ def fuzzy_mult_loop(x, y, endType, precision=1):
     
     return c / (2 * 10 ** (fuzzy_get_sigfigs(x)) * 10 ** (fuzzy_get_sigfigs(y)))
 
-def fuzzyarithmetic(operation, precision=1):
+# Generates a fuzzy arithmetic function.
+def fuzzyarithmetic(operation, precision = 1):
     match operation:
         case 0: # Multiplication
             return lambda x, y : list(random.triangular(fuzzy_mult_loop(float(i[1]), float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), 1, precision), fuzzy_mult_loop(float(i[1]), float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), 2, precision), fuzzy_mult_loop(float(i[1]), float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), 0, precision)) for i in list(enumerate(str(x).strip('[]').split(','))))
@@ -35,8 +42,8 @@ def fuzzyarithmetic(operation, precision=1):
         case 3: # Subtraction
             return lambda x, y : random.triangular((x - y) * (1 - fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), (x - y) * (1 + fuzzy_fuzz_num(precision, fuzzy_get_bigfig(x, y))), x - y)
 
-
-def fuzzyrange(x, y, operation ,precision=1):
+# Returns the possible range of outputs that an operation may produce.
+def fuzzyrange(x, y, operation, precision = 1):
     match operation:
         case 0: # Multiplication
             return list([fuzzy_mult_loop(float(i[1]), float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), 1, precision),fuzzy_mult_loop(float(i[1]), float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), 0, precision), fuzzy_mult_loop(float(i[1]), float(y if len(str(y).strip('[]').split(',')) == 1 else str(y).strip('[]').split(',')[i[0]]), 2, precision)] for i in list(enumerate(str(x).strip('[]').split(','))))
